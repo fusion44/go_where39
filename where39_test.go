@@ -2,19 +2,19 @@ package where39
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"testing"
 )
 
 const shuffleValue = 1337
 
-// (ex)Room77, Berlin
-var okCoords = LatLng{Lat: 52.49303704, Lng: 13.41792593}
-
+// Room77, Berlin
+var room77Coords = LatLng{Lat: 52.49303704, Lng: 13.41792593}
 var emptyWordList = []string{}
 var tooLongWordList = []string{"slush", "extend", "until", "layer", "arch", "small"}
-var wordsStandard = []string{"slush", "extend", "until", "layer", "arch"}
-var wordsShuffled1337 = []string{"small", "extra", "unusual", "lazy", "accident"}
+var room77Words = []string{"slush", "extend", "until", "layer", "arch"}
+var room77Shuffled1337 = []string{"small", "extra", "unusual", "lazy", "accident"}
 
 func TestFromWordsArgs(t *testing.T) {
 	// test an empty word list
@@ -33,15 +33,32 @@ func TestFromWordsArgs(t *testing.T) {
 }
 
 func TestFromWordsConversion(t *testing.T) {
-	coords, err := FromWords(wordsStandard)
+	coords, err := FromWords(room77Words)
 	if err != nil {
 		t.Log("Should not return an error: ", err)
 		t.Fail()
 	}
 
-	if fmt.Sprintf("%.8f", coords.Lat) != fmt.Sprintf("%.8f", okCoords.Lat) || fmt.Sprintf("%.8f", coords.Lng) != fmt.Sprintf("%.8f", okCoords.Lng) {
-		t.Log("Conversion results should be ", okCoords)
+	if fmt.Sprintf("%.8f", coords.Lat) != fmt.Sprintf("%.8f", room77Coords.Lat) || fmt.Sprintf("%.8f", coords.Lng) != fmt.Sprintf("%.8f", room77Coords.Lng) {
+		t.Log("Conversion results should be ", room77Coords)
 		t.Log("Conversion results should are ", coords)
 		t.Fail()
 	}
+}
+
+func TestToWordsConversion(t *testing.T) {
+	words, err := ToWords(room77Coords)
+
+	if err != nil {
+		t.Log("Error running ToWords() ", err)
+		t.Fail()
+
+	}
+
+	if !reflect.DeepEqual(words, room77Words) {
+		t.Log("Conversion results should be ", room77Coords)
+		t.Log("Conversion results should are ", words)
+		t.Fail()
+	}
+
 }
