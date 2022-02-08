@@ -1,4 +1,4 @@
-package where39
+package go_where39
 
 // LatLong represents a geographic coordinate
 type LatLng struct {
